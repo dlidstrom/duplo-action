@@ -3,13 +3,14 @@
 > ⚡️ Lightning fast duplicate code detection! Supports all text formats with
 > special handling of comments for common languages.
 
-![CI](https://github.com/dlidstrom/duplo-action/workflows/test/badge.svg)
+[![test](https://github.com/dlidstrom/duplo-action/actions/workflows/build.yml/badge.svg)](https://github.com/dlidstrom/duplo-action/actions/workflows/build.yml)
 
 ## Overview
 
 **Duplo Analyser** is a GitHub Action for detecting duplicate code blocks in
 your repository. It scans source files and identifies similar code snippets
-based on configurable parameters.
+based on configurable parameters. This action uses the
+[Duplo](https://github.com/dlidstrom/Duplo) command line tool.
 
 ## Usage
 
