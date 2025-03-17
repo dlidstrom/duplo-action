@@ -10,7 +10,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         include-pattern: [ ".*\\.yml", ".*" ]
-        exclude-pattern: [ "\\.md" ]
+        exclude-pattern: [ ".*\\.md" ]
         minimum-lines: ["3", "4"]
         max-files: ["1", "2"]
         ignore-preprocessor-directives: ["", "true"]
