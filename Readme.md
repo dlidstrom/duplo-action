@@ -9,8 +9,9 @@
 
 **Duplo Analyser** is a GitHub Action for detecting duplicate code blocks in
 your repository. It scans source files and identifies similar code snippets
-based on configurable parameters. This action uses the
-[Duplo](https://github.com/dlidstrom/Duplo) command line tool.
+based on configurable parameters.
+
+🔋 This action is powered by [Duplo](https://github.com/dlidstrom/Duplo) - the fastest (?) duplicate detector on GitHub.
 
 ## 🚀 Usage
 
