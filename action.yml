@@ -1,0 +1,101 @@
+name: 'Duplo analyser'
+description: 'Duplicate code blocks detection'
+branding:
+  icon: check-square
+  color: green
+inputs:
+  directory:
+    description: 'Top directory from which to search for files'
+    required: true
+    default: '.'
+  include-pattern:
+    description: 'Regular expression used to include filenames for analysis (case-insensitive)'
+    required: true
+    default: '.*'
+  exclude-pattern:
+    description: 'Regular expression used to exclude filenames for analysis (case-insensitive)'
+    required: true
+    default: '.^'
+  minimum-lines:
+    description: 'Minimum number of lines required for duplicate detection'
+    required: true
+    default: "10"
+  minimum-line-length:
+   description: 'Minimum number of characters in line (lines with less are ignored)'
+   required: true
+   default: "3"
+  max-files:
+    description: 'Maximum number of files to report (useful if there are many duplicates)'
+    required: true
+    default: "100"
+  ignore-preprocessor-directives:
+    description: 'Remove pre-processor directives before doing duplicate detection'
+    required: true
+    default: "true"
+  version:
+    description: 'Version of Duplo to use'
+    required: true
+    default: 'v1.1.1'
+runs:
+  using: "composite"
+  steps:
+
+    # platform-specific setup
+
+    - name: Set executable name
+      shell: bash
+      if: runner.os == 'Linux' || runner.os == 'macOS'
+      run: echo "EXE=$RUNNER_TEMP/duplo" >> $GITHUB_ENV
+
+    - name: Set executable name
+      shell: bash
+      if: runner.os == 'Windows'
+      run: echo "EXE=$RUNNER_TEMP\duplo.exe" >> $GITHUB_ENV
+
+    # rest is common
+
+    - uses: actions/cache@v4
+      id: cache
+      with:
+        path: ${{ env.EXE }}
+        key: ${{ inputs.version }}
+
+    - name: Set variables
+      shell: bash
+      run: |
+        DUPLO=$(echo "duplo-$RUNNER_OS.zip" | tr '[:upper:]' '[:lower:]')
+        echo "DUPLO=$DUPLO" >> "$GITHUB_ENV"
+        echo "ARCHIVE=$RUNNER_TEMP/duplo.zip" >> "$GITHUB_ENV"
+
+    - name: Download Duplo
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      env:
+        VERSION: ${{ inputs.version }}
+      run: |
+        ./download.sh "$DUPLO" "$ARCHIVE" "$VERSION"
+        rm -f "$EXE"
+        unzip "$ARCHIVE" -d "$RUNNER_TEMP"
+
+    - name: Analyse files
+      shell: bash
+      run: |
+        # defaults
+        INCLUDE_PATTERN=${INCLUDE_PATTERN:-".*"}
+        EXCLUDE_PATTERN=${EXCLUDE_PATTERN:-"^$"}
+
+        ARGS=(-ml "$INPUT_MINIMUM_LINES" -mc "$INPUT_MINIMUM_LINE_LENGTH")
+        if [[ "$IGNORE_PREPROCESSOR_DIRECTIVES" =~ ^(true|True|1)$ ]]; then
+          ARGS+=(-ip)
+        fi
+
+        ARGS+=(- -)
+        echo "command: $EXE ${ARGS[*]}"
+        find "$DIRECTORY" -type f \( -iregex "$INCLUDE_PATTERN" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
+      env:
+        INCLUDE_PATTERN: ${{ inputs.include-pattern }}
+        EXCLUDE_PATTERN: ${{ inputs.exclude-pattern }}
+        INPUT_MINIMUM_LINES: ${{ inputs.minimum-lines }}
+        INPUT_MINIMUM_LINE_LENGTH: ${{ inputs.minimum-line-length }}
+        IGNORE_PREPROCESSOR_DIRECTIVES: ${{ inputs.ignore-preprocessor-directives }}
+        DIRECTORY: ${{ inputs.directory }}
