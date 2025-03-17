@@ -3,6 +3,8 @@
 > ⚡️ Lightning fast duplicate code detection! Supports all text formats with
 > special handling of comments for common languages.
 
+![CI](https://github.com/dlidstrom/duplo-action/workflows/test/badge.svg)
+
 ## Overview
 
 **Duplo Analyser** is a GitHub Action for detecting duplicate code blocks in
