@@ -67,6 +67,13 @@ jobs:
           ignore-preprocessor-directives: "true"
 ```
 
+Sample include patterns:
+
+- **C/C++**: `'.*(\.h|\.cpp)$'`
+- **JavaScript**: `'.*\.js$'` - or any other extension you need
+
+The OR (`|`) operator only works inside groups `()`. Excluding files works in the same fashion.
+
 ## 📤 Output
 
 The action prints duplicate code blocks to the workflow logs, allowing you to
