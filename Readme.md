@@ -9,7 +9,8 @@
 
 **Duplo Analyser** is a GitHub Action for detecting duplicate code blocks in
 your repository. It scans source files and identifies similar code snippets
-based on configurable parameters.
+based on configurable parameters. In case any duplicate blocks are found the
+action will fail the build.
 
 🔋 This action is powered by [Duplo](https://github.com/dlidstrom/Duplo) - the fastest (?) duplicate detector on GitHub.
 
@@ -31,16 +32,16 @@ Add the following step to your GitHub Actions workflow:
 
 ## 🔧 Inputs
 
-| 🔹 Input Name | 📝 Description | ❗ Required | 🏷️ Default |
+| 🔹 Input Name | 📝 Description | 🏷️ Default |
 |--------------|---------------|------------|-----------|
-| `directory` | 📂 Top directory to search for files | ✅ Yes | `.` |
-| `include-pattern` | 🔍 Regular expression for including filenames (case-insensitive) | ✅ Yes | `.*` |
-| `exclude-pattern` | 🚫 Regular expression for excluding filenames (case-insensitive) | ✅ Yes | `.^` |
-| `minimum-lines` | 📏 Minimum number of lines required for duplicate detection | ✅ Yes | `10` |
-| `minimum-line-length` | ✂️ Minimum number of characters per line (shorter lines are ignored) | ✅ Yes | `3` |
-| `max-files` | 📊 Maximum number of files to report (useful for large duplicate sets) | ✅ Yes | `100` |
-| `ignore-preprocessor-directives` | 🛑 Removes preprocessor directives before duplicate detection | ✅ Yes | `true` |
-| `version` | 📌 Version of Duplo to use | ✅ Yes | `v1.1.1` |
+| `directory` | 📂 Top directory to search for files | `.` |
+| `include-pattern` | 🔍 Regular expression for including filenames (case-insensitive) | `.*` |
+| `exclude-pattern` | 🚫 Regular expression for excluding filenames (case-insensitive) | `.^` |
+| `minimum-lines` | 📏 Minimum number of lines required for duplicate detection | `10` |
+| `minimum-line-length` | ✂️ Minimum number of characters per line (shorter lines are ignored) | `3` |
+| `max-files` | 📊 Maximum number of files to report (useful for large duplicate sets) | `100` |
+| `ignore-preprocessor-directives` | 🛑 Removes preprocessor directives before duplicate detection | `true` |
+| `version` | 📌 Version of Duplo to use | `v1.1.1` |
 
 ## 🔄 Example Workflow
 
