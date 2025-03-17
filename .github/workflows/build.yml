@@ -1,0 +1,37 @@
+on: [push]
+
+jobs:
+  duplicate-detection:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include-pattern: [ ".*\\.yml", ".*" ]
+        exclude-pattern: [ "", "\\.sh" ]
+        minimum-lines: ["3", "4"]
+        max-files: ["1", "2"]
+        ignore-preprocessor-directives: ["", "true"]
+        minimum-line-length: ["2", "4"]
+    name: Detect duplicates
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Remove .git folder
+        if: runner.os == 'Windows'
+        run: |
+          Remove-Item -Force -Recurse .git
+      - name: Remove .git folder
+        if: runner.os == 'Linux' || runner.os == 'macOS'
+        run: |
+          rm -rf .git
+      - name: Duplo
+        uses: dlidstrom/duplo-action@f5fe9845b2c0133a467176f86a310d832ce69fae
+        with:
+          include-pattern: ${{ matrix.include-pattern }}
+          exclude-pattern: ${{ matrix.exclude-pattern }}
+          minimum-lines: ${{ matrix.minimum-lines }}
+          max-files: ${{ matrix.max-files }}
+          ignore-preprocessor-directives: ${{ matrix.ignore-preprocessor-directives }}
+          minimum-line-length: ${{ matrix.minimum-line-length }}
