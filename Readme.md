@@ -34,9 +34,10 @@ Add the following step to your GitHub Actions workflow:
 
 | 🔹 Input Name | 📝 Description | 🏷️ Default |
 |--------------|---------------|-----------|
-| `directory` | 📂 Top directory to search for files | `.` |
-| `include-pattern` | 🔍 Regular expression for including filenames (case-insensitive) | `.*` |
-| `exclude-pattern` | 🚫 Regular expression for excluding filenames (case-insensitive) | `.^` |
+| `directory` | 📂 Top directory from which to search for files. Only used with `include-pattern`. | `.` |
+| `include-pattern` | 🔍 Regular expression for including filenames (case-insensitive). Mutually exlusive with `file-list`. | `.*` |
+| `exclude-pattern` | 🚫 Regular expression for excluding filenames (case-insensitive). Only used with `include-pattern`. | `.^` |
+| `file-list` | 📝 File with filenames to analyse. Mutually exclusive with `include-pattern`. | `''` |
 | `minimum-lines` | 📏 Minimum number of lines required for duplicate detection | `10` |
 | `minimum-line-length` | ✂️ Minimum number of characters per line (shorter lines are ignored) | `3` |
 | `max-files` | 📊 Maximum number of files to report (useful for large duplicate sets) | `100` |
@@ -44,6 +45,8 @@ Add the following step to your GitHub Actions workflow:
 | `version` | 📌 Version of Duplo to use | `v1.1.1` |
 
 ## 🔄 Example Workflow
+
+### 🔍 Using regular expressions
 
 ```yaml
 name: Detect Duplicate Code
@@ -73,6 +76,29 @@ Sample include patterns:
 - **JavaScript**: `'.*\.js$'` - or any other extension you need
 
 The OR (`|`) operator only works inside groups `()`. Excluding files works in the same fashion.
+
+### 📝 Using file list
+
+```yaml
+name: Detect Duplicate Code
+on: [push, pull_request]
+
+jobs:
+  duplication-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Duplo Analyser
+        uses: dlidstrom/duplo-analyser@v1
+        with:
+          file-list: 'files.lst'
+```
+
+Using the file list option is useful when only analysing a specific subset of
+files, for example the files that are changed in a PR. This allows for having
+stricter rules for the files that are actively worked on.
 
 ## 📤 Output
 

@@ -5,17 +5,20 @@ branding:
   color: green
 inputs:
   directory:
-    description: 'Top directory from which to search for files'
-    required: true
+    description: 'Top directory from which to search for files. Only used with include-pattern.'
+    required: false
     default: '.'
   include-pattern:
-    description: 'Regular expression used to include filenames for analysis (case-insensitive)'
-    required: true
-    default: '.*'
+    description: 'Regular expression used to include filenames for analysis (case-insensitive). Mutually exlusive with file-list.'
+    required: false
   exclude-pattern:
-    description: 'Regular expression used to exclude filenames for analysis (case-insensitive)'
-    required: true
+    description: 'Regular expression used to exclude filenames for analysis (case-insensitive). Only used with include-pattern.'
+    required: false
     default: '.^'
+  file-list:
+    description: 'File with filenames to analyse. Mutually exclusive with include-pattern.'
+    required: false
+    default: ''
   minimum-lines:
     description: 'Minimum number of lines required for duplicate detection'
     required: true
@@ -80,21 +83,39 @@ runs:
     - name: Analyse files
       shell: bash
       run: |
-        # defaults
-        INCLUDE_PATTERN=${INCLUDE_PATTERN:-".*"}
-        EXCLUDE_PATTERN=${EXCLUDE_PATTERN:-"^$"}
-
         ARGS=(-ml "$INPUT_MINIMUM_LINES" -mc "$INPUT_MINIMUM_LINE_LENGTH")
         if [[ "$IGNORE_PREPROCESSOR_DIRECTIVES" =~ ^(true|True|1)$ ]]; then
           ARGS+=(-ip)
         fi
 
-        ARGS+=(- -)
-        echo "command: $EXE ${ARGS[*]}"
-        find "$DIRECTORY" -type f \( -iregex "$INCLUDE_PATTERN" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
+        if [[ -n "$FILE_LIST" ]]; then
+          if [[ -n "$INCLUDE_PATTERN" ]]; then
+            echo "INCLUDE_PATTERN and FILE_LIST are mutually exclusive; specify only one of them."
+            exit 1
+          fi
+
+          if [[ -n "$EXCLUDE_PATTERN" ]]; then
+            echo "warn: EXCLUDE_PATTERN is not used with FILE_LIST"
+          fi
+
+          if [[ -n "$DIRECTORY" ]]; then
+            echo "warn: DIRECTORY is not used with FILE_LIST"
+          fi
+
+          ARGS+=("$FILE_LIST" -)
+          echo "command: $EXE ${ARGS[*]}"
+          "$EXE" "${ARGS[@]}"
+        elif [[ -n "$INCLUDE_PATTERN" ]]; then
+          ARGS+=(- -)
+          echo "command: $EXE ${ARGS[*]}"
+          find "$DIRECTORY" -type f \( -iregex "$INCLUDE_PATTERN" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
+        else
+          echo "error: Specify either INCLUDE_PATTERN or FILE_LIST!"
+        fi
       env:
         INCLUDE_PATTERN: ${{ inputs.include-pattern }}
         EXCLUDE_PATTERN: ${{ inputs.exclude-pattern }}
+        FILE_LIST: ${{ inputs.file-list }}
         INPUT_MINIMUM_LINES: ${{ inputs.minimum-lines }}
         INPUT_MINIMUM_LINE_LENGTH: ${{ inputs.minimum-line-length }}
         IGNORE_PREPROCESSOR_DIRECTIVES: ${{ inputs.ignore-preprocessor-directives }}
