@@ -33,7 +33,7 @@ Add the following step to your GitHub Actions workflow:
 ## 🔧 Inputs
 
 | 🔹 Input Name | 📝 Description | 🏷️ Default |
-|--------------|---------------|------------|-----------|
+|--------------|---------------|-----------|
 | `directory` | 📂 Top directory to search for files | `.` |
 | `include-pattern` | 🔍 Regular expression for including filenames (case-insensitive) | `.*` |
 | `exclude-pattern` | 🚫 Regular expression for excluding filenames (case-insensitive) | `.^` |
