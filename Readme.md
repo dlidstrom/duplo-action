@@ -56,7 +56,7 @@ jobs:
 
       - name: Run Duplo Analyser
         uses: dlidstrom/duplo-analyser@v1
-        with:
+        with: # optionally override the defaults
           directory: '.'
           include-pattern: '.*'
           minimum-lines: "10"
