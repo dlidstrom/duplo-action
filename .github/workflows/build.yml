@@ -11,7 +11,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         include-pattern: [ ".*\\.yml", ".*" ]
         exclude-pattern: [ ".*\\.md" ]
-        minimum-lines: ["3", "4"]
+        minimum-lines: ["5", "6"]
         max-files: ["1", "2"]
         ignore-preprocessor-directives: ["", "true"]
         minimum-line-length: ["2", "4"]
@@ -29,7 +29,7 @@ jobs:
         run: |
           rm -rf .git
       - name: Duplo
-        uses: dlidstrom/duplo-action@f5fe9845b2c0133a467176f86a310d832ce69fae
+        uses: dlidstrom/duplo-action@8447426601586ad06a397787ca68c1c0ef2476f8
         with:
           include-pattern: ${{ matrix.include-pattern }}
           exclude-pattern: ${{ matrix.exclude-pattern }}
@@ -37,3 +37,18 @@ jobs:
           max-files: ${{ matrix.max-files }}
           ignore-preprocessor-directives: ${{ matrix.ignore-preprocessor-directives }}
           minimum-line-length: ${{ matrix.minimum-line-length }}
+  file-list:
+    name: From file list
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Create file list
+        run: |
+          echo "action.yml" >> files.lst
+          echo ".github/workflows/build.yml" >> files.lst
+      - name: Duplo
+        uses: dlidstrom/duplo-action@8447426601586ad06a397787ca68c1c0ef2476f8
+        with:
+          file-list: files.lst
