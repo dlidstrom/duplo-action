@@ -1,5 +1,5 @@
 name: 'Duplo analyser'
-description: 'Duplicate code blocks detection'
+description: '⚡️ Super fast duplicated blocks finder'
 branding:
   icon: check-square
   color: green
