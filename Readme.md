@@ -1,4 +1,4 @@
-# 🚀 Duplo Analyser GitHub Action
+# 🚀 Duplo Analyser - GitHub Action
 
 > ⚡️ Lightning fast duplicate code detection! Supports all text formats with
 > special handling of comments for common languages.
