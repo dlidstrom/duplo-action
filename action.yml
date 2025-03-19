@@ -111,7 +111,7 @@ runs:
           if [[ "$RUNNER_OS" == "macOS" ]]
             find -E "$DIRECTORY" -type f \( -iregex "$INCLUDE_PATTERN" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
           else
-            find "$DIRECTORY" -type f \( -regextype awk -iregex "$INCLUDE_PATTERN" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
+            find "$DIRECTORY" -type f \( -regextype posix-extended -iregex "$INCLUDE_PATTERN" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
           fi
         else
           echo "error: Specify either INCLUDE_PATTERN or FILE_LIST!"
