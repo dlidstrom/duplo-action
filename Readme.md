@@ -70,12 +70,15 @@ jobs:
           ignore-preprocessor-directives: "true"
 ```
 
-Sample include patterns:
+Sample include patterns (note that the entire filename must match):
 
-- **C/C++**: `'.*(\.h|\.cpp)$'`
+- **C/C++**: `'.*\.(h|cpp)$'`
 - **JavaScript**: `'.*\.js$'` - or any other extension you need
 
 The OR (`|`) operator only works inside groups `()`. Excluding files works in the same fashion.
+
+> The `find` utility is used on all platforms, with `awk` syntax on Linux (and
+> Windows) or extended (modern) regular expressions (on macOS).
 
 ### 📝 Using file list
 
