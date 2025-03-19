@@ -78,7 +78,7 @@ Sample include patterns (note that the entire filename must match):
 The OR (`|`) operator only works inside groups `()`. Excluding files works in the same fashion.
 
 > The `find` utility is used on all platforms, with `awk` syntax on Linux (and
-> Windows) or extended (modern) regular expressions (on macOS).
+> Windows) or extended (modern) regular expressions on macOS.
 
 ### 📝 Using file list
 
