@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Duplo Analyser
-        uses: dlidstrom/duplo-analyser@v1
+        uses: dlidstrom/duplo-analyser@v2
         with: # optionally override the defaults
           directory: '.'
           include-pattern: '.*'
@@ -93,7 +93,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Duplo Analyser
-        uses: dlidstrom/duplo-analyser@v1
+        uses: dlidstrom/duplo-analyser@v2
         with:
           file-list: 'files.lst'
 ```
