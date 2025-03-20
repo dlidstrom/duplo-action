@@ -107,6 +107,34 @@ stricter rules for the files that are actively worked on.
 The action prints duplicate code blocks to the workflow logs, allowing you to
 identify and refactor repeated code.
 
+Sample:
+
+```txt
+Loading and hashing files ... 2 done.
+
+tests/Quake2/g_chase.c(137)
+tests/Quake2/g_chase.c(113)
+	int i;
+	edict_t *e;
+	if (!ent->client->chase_target)
+		return;
+	i = ent->client->chase_target - g_edicts;
+	do {
+
+tests/Quake2/g_chase.c found: 1 block(s)
+Configuration:
+  Number of files: 1
+  Minimal block size: 4
+  Minimal characters in line: 3
+  Ignore preprocessor directives: 0
+  Ignore same filenames: 0
+
+Results:
+  Lines of code: 96
+  Duplicate lines of code: 6
+  Total 1 duplicate block(s) found.
+```
+
 ## 🛠️ How It Works
 
 1. **🖥️ Platform-Specific Setup:**
