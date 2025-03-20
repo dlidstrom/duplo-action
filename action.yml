@@ -141,7 +141,7 @@ runs:
         elif [[ -n "$INCLUDE_PATTERN" ]]; then
           ARGS+=(- -)
           echo "command: $EXE ${ARGS[*]}"
-          if [[ "$RUNNER_OS" == "macOS" ]]
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
             find -E "$DIRECTORY" -type f \( -iregex "$INCLUDE_PATTERN" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
           else
             find "$DIRECTORY" -type f \( -regextype posix-extended -iregex "$INCLUDE_PATTERN" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
