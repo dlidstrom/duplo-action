@@ -138,16 +138,15 @@ runs:
           ARGS+=("$FILE_LIST" -)
           echo "command: $EXE ${ARGS[*]}"
           "$EXE" "${ARGS[@]}"
-        elif [[ -n "$INCLUDE_PATTERN" ]]; then
+        else
+          INC=${INCLUDE_PATTERN:-.*}
           ARGS+=(- -)
           echo "command: $EXE ${ARGS[*]}"
           if [[ "$RUNNER_OS" == "macOS" ]]; then
-            find -E "$DIRECTORY" -type f \( -iregex "$INCLUDE_PATTERN" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
+            find -E "$DIRECTORY" -type f \( -iregex "$INC" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
           else
-            find "$DIRECTORY" -type f \( -regextype posix-extended -iregex "$INCLUDE_PATTERN" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
+            find "$DIRECTORY" -type f \( -regextype posix-extended -iregex "$INC" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
           fi
-        else
-          echo "error: Specify either INCLUDE_PATTERN or FILE_LIST!"
         fi
       env:
         INCLUDE_PATTERN: ${{ inputs.include-pattern }}
