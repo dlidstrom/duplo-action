@@ -114,7 +114,7 @@ runs:
         unzip "$ARCHIVE" -d "$RUNNER_TEMP"
 
     - name: Analyse files
-      shell: bash
+      shell: bash --noprofile --norc -x -o pipefail {0}
       run: |
         ARGS=(-ml "$INPUT_MINIMUM_LINES" -mc "$INPUT_MINIMUM_LINE_LENGTH")
         if [[ "$IGNORE_PREPROCESSOR_DIRECTIVES" =~ ^(true|True|1)$ ]]; then
