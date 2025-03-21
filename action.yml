@@ -139,14 +139,11 @@ runs:
           echo "command: $EXE ${ARGS[*]}"
           "$EXE" "${ARGS[@]}"
         else
-          INC=${INCLUDE_PATTERN:-.*}
           ARGS+=(- -)
           echo "command: $EXE ${ARGS[*]}"
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            find -E "$DIRECTORY" -type f \( -iregex "$INC" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
-          else
-            find "$DIRECTORY" -type f \( -regextype posix-extended -iregex "$INC" ! -iregex "$EXCLUDE_PATTERN" \) | "$EXE" "${ARGS[@]}"
-          fi
+          find "$DIRECTORY" -type f | grep --extended-regexp --ignore-case "$INCLUDE_PATTERN" | grep --extended-regexp --ignore-case --invert-match "$EXCLUDE_PATTERN" | "$EXE" "${ARGS[@]}"
+        else
+          echo "error: Specify either INCLUDE_PATTERN or FILE_LIST!"
         fi
       env:
         INCLUDE_PATTERN: ${{ inputs.include-pattern }}
