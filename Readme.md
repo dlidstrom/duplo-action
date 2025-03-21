@@ -70,7 +70,7 @@ jobs:
           ignore-preprocessor-directives: "true"
 ```
 
-Sample include patterns (note that the entire filename must match):
+Sample include patterns (partial match is sufficient):
 
 - **C/C++**: `'\.(h|cpp)$'`
 - **JavaScript**: `'\.js$'` - or any other extension you need
