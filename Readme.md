@@ -20,7 +20,7 @@ Add the following step to your GitHub Actions workflow:
 
 ```yaml
 - name: Run Duplo Analyser
-  uses: dlidstrom/duplo-analyser@v1
+  uses: dlidstrom/duplo-analyser@v2.0.6
   with:
     directory: '.'
     include-pattern: '.*'
@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Duplo Analyser
-        uses: dlidstrom/duplo-analyser@v2
+        uses: dlidstrom/duplo-analyser@v2.0.6
         with: # optionally override the defaults
           directory: '.'
           include-pattern: '.*'
@@ -72,12 +72,12 @@ jobs:
 
 Sample include patterns (note that the entire filename must match):
 
-- **C/C++**: `'.*\.(h|cpp)$'`
-- **JavaScript**: `'.*\.js$'` - or any other extension you need
+- **C/C++**: `'\.(h|cpp)$'`
+- **JavaScript**: `'\.js$'` - or any other extension you need
 
 The OR (`|`) operator only works inside groups `()`. Excluding files works in the same fashion.
 
-> The `find` utility is used on all platforms, using [posix-extended syntax](https://www.gnu.org/software/findutils/manual/html_node/find_html/posix_002dextended-regular-expression-syntax.html).
+> The `grep` utility is used on all platforms, using [posix-extended syntax](https://www.gnu.org/software/findutils/manual/html_node/find_html/posix_002dextended-regular-expression-syntax.html).
 
 ### 📝 Using file list
 
@@ -93,7 +93,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Duplo Analyser
-        uses: dlidstrom/duplo-analyser@v2
+        uses: dlidstrom/duplo-analyser@v2.0.6
         with:
           file-list: 'files.lst'
 ```
