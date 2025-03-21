@@ -138,7 +138,7 @@ runs:
           ARGS+=("$FILE_LIST" -)
           echo "command: $EXE ${ARGS[*]}"
           "$EXE" "${ARGS[@]}"
-        else
+        elif [[ -n "$INCLUDE_PATTERN" ]]; then
           ARGS+=(- -)
           echo "command: $EXE ${ARGS[*]}"
           find "$DIRECTORY" -type f | grep --extended-regexp --ignore-case "$INCLUDE_PATTERN" | grep --extended-regexp --ignore-case --invert-match "$EXCLUDE_PATTERN" | "$EXE" "${ARGS[@]}"
